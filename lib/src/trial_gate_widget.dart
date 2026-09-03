@@ -185,8 +185,8 @@ class _TrialGateWidgetState extends State<TrialGateWidget> {
               const SizedBox(height: 12),
               TextButton(
                 onPressed: () {
-                  // 重新检查授权（可能已在其他设备付费）
-                  _controller.start();
+                  // 锁死后重新验证，只给1分钟
+                  _controller.recheckLicense();
                 },
                 child: const Text(
                   '我已付费，重新验证',

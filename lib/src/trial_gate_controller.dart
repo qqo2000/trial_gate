@@ -168,9 +168,35 @@ class TrialGateController {
     return digest.toString();
   }
 
-  /// 开始试用倒计时
+  /// 开始试用倒计时（使用配置的试用时长）
   void _startTrial() {
-    int remaining = config.effectiveTrialDuration;
+    _startTrialWithDuration(config.effectiveTrialDuration);
+  }
+
+  /// 锁死后重新验证授权（只给1分钟试用，防止无限续用）
+  Future<void> recheckLicense() async {
+    _emitState(TrialGateState(state: LicenseState.checking));
+
+    try {
+      final isActivated = await _checkLicense();
+
+      if (isActivated) {
+        _saveCache();
+        _emitState(TrialGateState(state: LicenseState.activated));
+        return;
+      }
+
+      // 未激活，只给1分钟（60秒）
+      _startTrialWithDuration(60);
+    } catch (e) {
+      // 网络错误，也只给1分钟
+      _startTrialWithDuration(60);
+    }
+  }
+
+  /// 指定时长的试用倒计时
+  void _startTrialWithDuration(int durationSeconds) {
+    int remaining = durationSeconds;
     _emitState(TrialGateState(
       state: LicenseState.trial,
       remainingSeconds: remaining,
