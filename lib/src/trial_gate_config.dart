@@ -12,11 +12,17 @@ class TrialGateConfig {
   /// HMAC 验签密钥（与后端一致，不要公开仓库泄露）
   final String secretKey;
 
-  /// 试用时长（秒），默认 300 = 5分钟
+  /// 首次试用时长（秒），默认 300 = 5分钟
   final int trialDuration;
 
-  /// 调试用试用时长（秒），不为 null 时覆盖 trialDuration
+  /// 锁死后重新验证的试用时长（秒），默认 60 = 1分钟
+  final int recheckDuration;
+
+  /// 调试用首次试用时长（秒），不为 null 时覆盖 trialDuration
   final int? debugDuration;
+
+  /// 调试用重新验证时长（秒），不为 null 时覆盖 recheckDuration
+  final int? debugRecheckDuration;
 
   /// 付费金额（元）
   final double amount;
@@ -40,15 +46,20 @@ class TrialGateConfig {
     required this.secretKey,
     required this.deviceId,
     this.trialDuration = 300,
+    this.recheckDuration = 60,
     this.debugDuration,
+    this.debugRecheckDuration,
     this.amount = 19.90,
     this.productName = 'App激活',
     this.offlineCacheDays = 7,
     this.pollInterval = 2,
   });
 
-  /// 实际试用时长（debugDuration 优先）
+  /// 实际首次试用时长（debugDuration 优先）
   int get effectiveTrialDuration => debugDuration ?? trialDuration;
+
+  /// 实际重新验证时长（debugRecheckDuration 优先）
+  int get effectiveRecheckDuration => debugRecheckDuration ?? recheckDuration;
 
   /// 离线缓存有效期（毫秒）
   int get offlineCacheMs => offlineCacheDays * 24 * 60 * 60 * 1000;

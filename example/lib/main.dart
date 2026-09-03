@@ -73,8 +73,10 @@ class _HomePageState extends State<HomePage> {
       deviceId: _deviceId,
       amount: 19.90,
       productName: 'HS5车机播放器',
-      trialDuration: 300,       // 正式环境：5分钟 = 300秒
-      debugDuration: 10,        // 测试用：10秒（正式上线删掉这行）
+      trialDuration: 300,             // 正式：首次5分钟
+      recheckDuration: 60,            // 正式：锁死后重新验证给1分钟
+      debugDuration: 10,             // 测试：首次10秒（上线删）
+      debugRecheckDuration: 5,       // 测试：重新验证5秒（上线删）
       offlineCacheDays: 7,
     );
 

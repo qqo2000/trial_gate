@@ -173,7 +173,7 @@ class TrialGateController {
     _startTrialWithDuration(config.effectiveTrialDuration);
   }
 
-  /// 锁死后重新验证授权（只给1分钟试用，防止无限续用）
+  /// 锁死后重新验证授权（只给短时试用，防止无限续用）
   Future<void> recheckLicense() async {
     _emitState(TrialGateState(state: LicenseState.checking));
 
@@ -186,11 +186,11 @@ class TrialGateController {
         return;
       }
 
-      // 未激活，只给1分钟（60秒）
-      _startTrialWithDuration(60);
+      // 未激活，只给重新验证时长
+      _startTrialWithDuration(config.effectiveRecheckDuration);
     } catch (e) {
-      // 网络错误，也只给1分钟
-      _startTrialWithDuration(60);
+      // 网络错误，也只给重新验证时长
+      _startTrialWithDuration(config.effectiveRecheckDuration);
     }
   }
 
