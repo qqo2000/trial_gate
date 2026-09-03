@@ -1,0 +1,23 @@
+name: trial_gate
+description: "Flutter App 试用授权模块 — 5分钟试用倒计时 + 付费永久激活 + 离线缓存 + 服务器验签"
+version: 1.0.0
+homepage: https://github.com/qqo2000/trial_gate
+
+environment:
+  sdk: ^3.0.0
+  flutter: ">=3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.0
+  webview_flutter: ^4.0.0
+  shared_preferences: ^2.2.0
+  crypto: ^3.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
